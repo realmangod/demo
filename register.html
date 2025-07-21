@@ -1,32 +1,11 @@
 <html>
+
 <head>
     <link rel="stylesheet" href="style.css">
     <style>
         h1 {
             text-align: center;
             color: #485;
-        }
-        .container {
-            width: 400px;
-            margin: 0 auto;
-        }
-        .info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .label {
-            width: 100px;
-            text-align: right;
-            margin-right: 10px;
-        }
-        .info input {
-            flex: 1;
-            padding: 6px;
-        }
-        .info button {
-            margin-left: 110px;
-            padding: 8px 20px;
         }
     </style>
     <script>
@@ -44,6 +23,10 @@
                 alert("密码长度必须大于8位");
                 return false;
             }
+            if (confirmPassword.length < 8) {
+                alert("确认密码长度必须大于8位");
+                return false;
+            }
             if (password !== confirmPassword) {
                 alert("密码和确认密码不匹配！");
                 return false;
@@ -59,6 +42,15 @@
                 pwdMsg.style.display = "none";
             }
         }
+        function checkConfirmPwdLength() {
+            var confirmPassword = document.regForm.confirmPassword.value;
+            var confirmPwdMsg = document.getElementById("confirmPwdMsg");
+            if (confirmPassword.length < 8) {
+                confirmPwdMsg.style.display = "block";
+            } else {
+                confirmPwdMsg.style.display = "none";
+            }
+        }
         usr = ""
         function readName() {
             // usr = document.getElementById("username").value;
@@ -67,33 +59,49 @@
         }
     </script>
 </head>
+
 <body>
     <h1>User Registration</h1>
-    <div class="container">
-        <form action="register.html" method="post" name="regForm">
-            <div class="info">
-                <label for="username" class="label">用户名:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="info">
-                <label for="email" class="label">邮箱:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="info">
-                <label for="password" class="label">密码:</label>
-                <input type="password" id="password" name="password" required onblur="checkPwdLength()">
-            </div>
-            <div class="info" style="margin-top:-10px;margin-bottom:5px;">
-                <span id="pwdMsg" style="color:red;display:none;font-size:13px;">密码长度必须大于8位</span>
-            </div>
-            <div class="info">
-                <label for="confirmPassword" class="label">确认密码:</label>
-                <input type="Password" id="confirmPassword" name="confirmPassword" required>
-            </div>
-            <div class="info">
-                <button type="submit" onclick="return validateForm()">注册</button>
-            </div>
-        </form>
-    </div>
+    <form action="register.html" method="post" name="regForm">
+        <table>
+            <tr>
+                <td>用户名:</td>
+                <td>
+                    <input type="text" id="username" name="username" required>
+                </td>
+            </tr>
+            <tr>
+                <td>邮箱:</td>
+                <td>
+                    <input type="email" id="email" name="email" required>
+                </td>
+            </tr>
+            <tr>
+                <td>密码:</td>
+                <td>
+                    <input type="password" id="password" name="password" required onblur="checkPwdLength()">
+                </td>
+                <td>
+                    <span id="pwdMsg" style="color:red;display:none;font-size:13px;">密码长度必须大于8位</span>
+                </td>
+            </tr>
+            <tr>
+                <td>确认密码:</td>
+                <td>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required onblur="checkConfirmPwdLength()">
+                </td>
+                <td>
+                    <span id="confirmPwdMsg" style="color:red;display:none;font-size:13px;">确认密码长度必须大于8位</span>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="text-align: left;">
+                    <button type="submit" onclick="if(validateForm()) { readName }">注册</button>
+                </td>
+            </tr>
+            </table>
+    </form>
 </body>
+
 </html>

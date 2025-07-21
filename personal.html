@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息网站</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            margin: auto;
+            box-shadow: 0 2px 8px #ccc;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        span {
+            color: #555;
+        }
+        
+        .info {
+            margin: 20px 0;
+        }
+
+        .label {
+            color: #888;
+            width: 80px;
+            display: inline-block;
+        }
+
+        .profile-photo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-photo img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .page-nav {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .page-btn {
+            background: #4285f4;
+            color: #fff;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .exp-title {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .exp-list {
+            margin: 0 0 20px 0;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="profile-photo">
+            <img src="./9cdba17fly1hr7hl7ek6tj20u014079q.jpg" alt="彭于晏">
+        </div>
+        <h1>Chao Yunheng</h1>
+        <!-- 页面1：基本信息 -->
+        <div class="page active" id="page1">
+            <div class="info">
+                <span class="label">性别：</span>
+                <span>男</span>
+            </div>
+            <div class="info">
+                <span class="label">出生日期：</span>
+                <span>1997-09-04</span>
+            </div>
+            <div class="info">
+                <span class="label">地址：</span>
+                <span>陕西省西安市</span>
+            </div>
+            <div class="info">
+                <span class="label">邮箱：</span>
+                <span>13259930535@163.com</span>
+            </div>
+            <div class="info">
+                <span class="label">电话：</span>
+                <span>13259930535</span>
+            </div>
+            <div class="info">
+                <span class="label">学历：</span>
+                <span>硕士研究生</span>
+            </div>
+            <div class="info">
+                <span class="label">兴趣爱好：</span>
+                <span>编程、阅读、旅行、音乐</span>
+            </div>
+            <div class="info">
+                <span class="label">简介：</span>
+                <span>热爱编程，喜欢学习新技术，致力于前端和后端开发。</span>
+            </div>
+        </div>
+        <!-- 页面2：公司和学习经历 -->
+        <div class="page" id="page2">
+            <div class="info">
+                <span class="label">公司经历：</span>
+                <div>
+                    <div class="exp-title">HSBC（汇丰银行）</div>
+                    <ul class="exp-list">
+                        <li>职位：软件开发工程师</li>
+                        <li>时间：2022年7月 - 至今</li>
+                        <li>主要工作：参与企业级金融系统开发，负责前端与后端模块设计与实现。</li>
+                    </ul>
+                    <div class="exp-title">腾讯科技</div>
+                    <ul class="exp-list">
+                        <li>职位：实习生</li>
+                        <li>时间：2021年7月 - 2022年1月</li>
+                        <li>主要工作：参与小程序开发，协助团队完成产品优化。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info">
+                <span class="label">学习经历：</span>
+                <div>
+                    <div class="exp-title">西安交通大学</div>
+                    <ul class="exp-list">
+                        <li>硕士研究生，计算机科学与技术</li>
+                        <li>2019年9月 - 2022年6月</li>
+                    </ul>
+                    <div class="exp-title">西安电子科技大学</div>
+                    <ul class="exp-list">
+                        <li>本科，软件工程</li>
+                        <li>2015年9月 - 2019年6月</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="page-nav">
+            <button class="page-btn" id="prevBtn" onclick="switchPage(-1)" disabled>上一页</button>
+            <button class="page-btn" id="nextBtn" onclick="switchPage(1)">下一页</button>
+        </div>
+    </div>
+    <script>
+        // 分页切换逻辑
+        let currentPage = 1;
+        function switchPage(delta) {
+            const pages = [document.getElementById('page1'), document.getElementById('page2')];
+            currentPage += delta;
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > 2) currentPage = 2;
+            pages.forEach((p, i) => p.classList.toggle('active', i === currentPage - 1));
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage === 2;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        h1 {
+            text-align: center;
+            color: #485;
+        }
+        .container {
+            width: 400px;
+            margin: 0 auto;
+        }
+        .info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .label {
+            width: 100px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        .info input {
+            flex: 1;
+            padding: 6px;
+        }
+        .info button {
+            margin-left: 110px;
+            padding: 8px 20px;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            var username = document.regForm.username.value;
+            var password = document.regForm.password.value;
+            var confirmPassword = document.regForm.confirmPassword.value;
+            var email = document.regForm.email.value;
+
+            if (username == "" || password == "" || email == "") {
+                alert("所有字段都是必填的！");
+                return false;
+            }
+            if (password.length < 8) {
+                alert("密码长度必须大于8位");
+                return false;
+            }
+            if (password !== confirmPassword) {
+                alert("密码和确认密码不匹配！");
+                return false;
+            }
+            return true;
+        }
+        function checkPwdLength() {
+            var password = document.regForm.password.value;
+            var pwdMsg = document.getElementById("pwdMsg");
+            if (password.length < 8) {
+                pwdMsg.style.display = "block";
+            } else {
+                pwdMsg.style.display = "none";
+            }
+        }
+        usr = ""
+        function readName() {
+            // usr = document.getElementById("username").value;
+            usr = document.regForm.username.value;
+            alter("Welcome " + usr + " to our website!");
+        }
+    </script>
+</head>
+<body>
+    <h1>User Registration</h1>
+    <div class="container">
+        <form action="register.html" method="post" name="regForm">
+            <div class="info">
+                <label for="username" class="label">用户名:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="info">
+                <label for="email" class="label">邮箱:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="info">
+                <label for="password" class="label">密码:</label>
+                <input type="password" id="password" name="password" required onblur="checkPwdLength()">
+            </div>
+            <div class="info" style="margin-top:-10px;margin-bottom:5px;">
+                <span id="pwdMsg" style="color:red;display:none;font-size:13px;">密码长度必须大于8位</span>
+            </div>
+            <div class="info">
+                <label for="confirmPassword" class="label">确认密码:</label>
+                <input type="Password" id="confirmPassword" name="confirmPassword" required>
+            </div>
+            <div class="info">
+                <button type="submit" onclick="return validateForm()">注册</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

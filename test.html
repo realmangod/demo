@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>图片滑动功能</title>
+  <style>
+    .slider {
+      width: 400px;
+      overflow: hidden;
+      position: relative;
+      margin: 0 auto;
+    }
+    .slider-track {
+      display: flex;
+      transition: transform 0.5s;
+    }
+    .slider img {
+      width: 400px;
+      height: 250px;
+      object-fit: cover;
+    }
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px 12px;
+      z-index: 1;
+    }
+    .slider-btn.prev { left: 10px; }
+    .slider-btn.next { right: 10px; }
+  </style>
+</head>
+<body>
+  <div class="slider">
+    <button class="slider-btn prev">&#8592;</button>
+    <div class="slider-track" id="sliderTrack">
+      <img src="https://picsum.photos/id/1015/400/250" alt="1">
+      <img src="https://picsum.photos/id/1016/400/250" alt="2">
+      <img src="https://picsum.photos/id/1018/400/250" alt="3">
+    </div>
+    <button class="slider-btn next">&#8594;</button>
+  </div>
+  <script>
+    const track = document.getElementById('sliderTrack');
+    const images = track.querySelectorAll('img');
+    let index = 0;
+
+    function updateSlider() {
+      track.style.transform = `translateX(-${index * 400}px)`;
+    }
+
+    document.querySelector('.slider-btn.prev').onclick = function() {
+      index = (index - 1 + images.length) % images.length;
+      updateSlider();
+    };
+    document.querySelector('.slider-btn.next').onclick = function() {
+      index = (index + 1) % images.length;
+      updateSlider();
+    };
+  </script>
+</body>
+</html>

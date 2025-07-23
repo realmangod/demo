@@ -1,0 +1,92 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using Mysql with API</title>
+</head>
+
+<body>
+    <center>
+        <h1>User data from mysql</h1>
+    </center>
+    <hr>
+    <h2>Users</h2>
+    <ul id="userlist"></ul>
+    <hr>
+    <h2>Add User</h2>
+    <form id="addUserForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Enter username" required>
+        <button type="submit">Add User</button>
+    </form>
+    <script>
+        const userlist = document.getElementById('userlist');
+        const userForm = document.getElementById('addUserForm');
+        const nameInput = document.getElementById('name');
+
+        // Function to fetch and display users
+        function getAllUsers() {
+            fetch('/users')
+                .then(res => res.json())
+                .then(users => {
+                    userlist.innerHTML = '';
+                    users.forEach(u => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `${u.id}: ${u.name} <button onclick="updateUser(${u.id}, '${u.name}')">Update</button> <button onclick="deleteUser(${u.id})">Delete</button>`;
+                        // li.textContent = u.name;
+                        userlist.appendChild(li);
+                    });
+                });
+        }
+
+        addUserForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = nameInput.value.trim();
+            if (name) {
+                // Post the name to the API
+                fetch('/users', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name })
+                })
+                    .then(res => res.json())
+                    .then(() => {
+                        nameInput.value = ''; // Clear the input field
+                        getAllUsers(); // Refresh the user list
+                    });
+            }
+        });
+
+        function updateUser(id, currentName) {
+            const newName = prompt("Enter new name:", currentName);
+            if (!newName) return; // If new name is null then nothing will be submitted
+            fetch(`/users/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: newName })
+            })
+                .then(() => {
+                    getAllUsers(); // Refresh the user list
+                });
+        }
+
+        function deleteUser(userId) {
+            // const userId = prompt("Enter user ID to delete:");
+            if (!userId) return; // If user ID is null then nothing will be submitted
+            fetch(`/users/${userId}`, {
+                method: 'DELETE'
+            })
+                .then(() => {
+                    getAllUsers(); // Refresh the user list
+                })
+                .catch(error => {
+                    console.error('Error deleting user:', error);
+                });
+        }
+
+        getAllUsers();
+    </script>
+</body>
+
+</html>

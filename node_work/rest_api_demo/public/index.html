@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using API</title>
+
+<body>
+    <h1>list of users</h1>
+    <ul id="userlist">
+    </ul>
+    <h1>add new user</h1>
+    <form id="addUserForm">
+        <input type="text" id="username" placeholder="Enter user name" required>
+        <button type="submit">Add User</button>
+    </form>
+    <script>
+        const userlist = document.getElementById('userlist');
+        const userForm = document.getElementById('addUserForm');
+        const username = document.getElementById('username');
+
+        function getAllUsers() {
+            fetch('/users')
+                .then(res => res.json())
+                .then(users => {
+                    userlist.innerHTML = '';
+                    users.forEach(user => {
+                        const li = document.createElement('li');
+                        li.textContent = user.name;
+                        userlist.appendChild(li);
+                    });
+                })
+        }
+
+        getAllUsers();
+    </script>
+</body>
+</head>
+
+</html>

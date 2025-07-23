@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>movie</title>
+</head>
+
+<body>
+    <h1>list of movie</h1>
+    <ul id="movielist">
+    </ul>
+    <h1>add new movie</h1>
+    <form id="addMovieForm">
+        <input type="text" id="movietitle" placeholder="Enter movie title" required>
+        <input type="text" id="moviedirector" placeholder="Enter movie director" required>
+        <button type="submit">Add Movie</button>
+    </form>
+    <script>
+        const movielist = document.getElementById('movielist');
+        const movieForm = document.getElementById('addMovieForm');
+        const movietitle = document.getElementById('movietitle');
+        const moviedirector = document.getElementById('moviedirector');
+
+        function getAllMovies() {
+            fetch('/movies')
+                .then(res => res.json())
+                .then(movies => {
+                    movielist.innerHTML = '';
+                    movies.forEach(movie => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `${movie.id}. ${movie.title} by ${movie.director} <button onclick="updateMovie(${movie.id}, '${movie.title}', '${movie.director}')">Update</button> <button onclick="deleteMovie(${movie.id})">Delete</button>`;
+                        movielist.appendChild(li);
+                    });
+                })
+        }
+
+        addMovieForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const title = movietitle.value;
+            const director = moviedirector.value;
+            if (!title || !director) return; // If title or director is null then nothing
+
+            // Post the name to the api
+            fetch('/movies', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, director})
+            })
+                .then(res => res.json())
+                .then(() => {
+                    movietitle.value = '';
+                    moviedirector.value = ''; // Clear the input field
+                    getAllMovies(); // Refresh the movie list
+                })
+        });
+
+        function updateMovie(id, currentTitle, currentDirector) {
+            const newTitle = prompt("Enter new title:", currentTitle);
+            const newDirector = prompt("Enter new director:", currentDirector);
+            if (!newTitle || !newDirector) return; // If new title or director is null then nothing will be submitted
+            fetch(`/movies/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: newTitle, director: newDirector })
+            })
+                .then(() => {
+                    getAllMovies(); // Refresh the movie list
+                });
+        }
+
+
+        function deleteMovie(movieId) {
+            if (!movieId) return; // If movie ID is null then nothing will be submitted
+            fetch(`/movies/${movieId}`, {
+                method: 'DELETE'
+            })
+                .then(() => {
+                    getAllMovies(); // Refresh the movie list
+                });
+        }
+
+        getAllMovies();
+    </script>
+</body>
+
+</html>

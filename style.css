@@ -4,3 +4,9 @@ body {
             padding: 0;
             background-color: #f4f4f4;
         }
+.copyright {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 0.8em;
+        }

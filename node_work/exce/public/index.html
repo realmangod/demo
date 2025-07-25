@@ -16,6 +16,10 @@
         <input type="text" id="moviedirector" placeholder="Enter movie director" required>
         <button type="submit">Add Movie</button>
     </form>
+    <form id="searchMovieForm">
+        <input type="text" id="searchMovieTitle" placeholder="Search movie by title">
+        <button type="button" onclick="searchMovie()">Search Movie</button>
+    </form>
     <script>
         const movielist = document.getElementById('movielist');
         const movieForm = document.getElementById('addMovieForm');
@@ -45,7 +49,7 @@
             fetch('/movies', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, director})
+                body: JSON.stringify({ title, director })
             })
                 .then(res => res.json())
                 .then(() => {
@@ -78,6 +82,28 @@
                 .then(() => {
                     getAllMovies(); // Refresh the movie list
                 });
+        }
+
+        function searchMovie() {
+            const searchTitle = document.getElementById('searchMovieTitle').value.trim();
+            if (!searchTitle) return; // If search title is null then nothing will be submitted
+            fetch(`/movies/search?title=${encodeURIComponent(searchTitle)}`)
+                .then(res => res.json())
+                .then(movies => {
+                    movielist.innerHTML = '';
+                    if (movies.length === 0) {
+                        const li = document.createElement('li');
+                        li.textContent = `No movies found with title "${searchTitle}"`;
+                        li.style.color = '#ff0000';
+                        movielist.appendChild(li);
+                    } else {
+                        movies.forEach(movie => {
+                            const li = document.createElement('li');
+                            li.innerHTML = `${movie.id}. ${movie.title} by ${movie.director} <button onclick="updateMovie(${movie.id}, '${movie.title}', '${movie.director}')">Update</button> <button onclick="deleteMovie(${movie.id})">Delete</button>`;
+                            movielist.appendChild(li);
+                        });
+                    };
+                }); 
         }
 
         getAllMovies();

@@ -34,6 +34,23 @@ app.get('/movies', (req, res) => {
     });
 });
 
+// select movie by title
+app.get('/movies/search', (req, res) => {
+    const title = req.query.title;
+    if (!title) {
+        return res.status(400).json({ error: 'Title query parameter is required' });
+    }
+    db.query('SELECT * FROM movies WHERE title LIKE ?', [`%${title}%`], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Database query failed' });
+        }
+        // if (results.length === 0) {
+        //     return res.status(404).json({ error: 'No movies found with that title' });
+        // }
+        res.json(results);
+    });
+});
+
 app.put('/movies/:id', (req, res) => {
     const id = req.params.id;
     const { title, director } = req.body;

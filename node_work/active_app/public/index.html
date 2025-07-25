@@ -1,0 +1,24 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>active random</title>
+</head>
+
+<body>
+    <h1>Just Do It</h1>
+    <button id="activeButton" onclick="getActive()">Get a active</button>
+    <p id="activeDisplay"></p>
+
+    <script>
+        async function getActive() {
+            const response = await fetch('/actives');
+            const data = await response.json();
+            let activeText = '';
+            activeText = data.activity;
+            document.getElementById('activeDisplay').innerHTML = activeText;
+        }
+    </script>
+</body>
+</html>
